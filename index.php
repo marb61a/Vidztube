@@ -3,6 +3,7 @@
     <head>
         <title>VidzTube</title>
         <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
+        <script src="assets/js/commonActions.js"></script>
     </head>
     <body>
         <div id="pageContainer">
