@@ -1,21 +1,6 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>VidzTube</title>
-        <link rel="stylesheet" type="text/css" href="assets/css/style.css"/>
-        <script src="assets/js/commonActions.js"></script>
-    </head>
-    <body>
-        <div id="pageContainer">
-            <div id="mastHeadContainer">
-                
-            </div>
-            <div id="sideNavContainer">
-                
-            </div>
-            <div id="mainSectionContainer">
-                
-            </div>
-        </div>
-    </body>
-</html>
+<?php require_once("includes/header.php"); ?>
+
+    Hi Everybody
+
+<?php require_once("includes/footer.php"); ?>
+                    
