@@ -11,7 +11,17 @@
             $titleInput = $this->createTitleInput();
             $descriptionInput = $this->createDescriptionInput();
             $privacyInput = $this->createPrivacyInput();
+            $categoriesInput = $this->createCategoriesInput();
+            $uploadButton = $this->createUploadButton();
             
+            return "<form action='processing.php' method='POST'>
+                $fileInput
+                $titleInput
+                $descriptionInput
+                $privacyInput
+                $categoriesInput
+                $uploadButton
+            </form>";    
         }
         
         private function createFileInput() {
@@ -40,6 +50,31 @@
                     <option value='1'>Public</option>
                 </select>
             </div>";
+        }
+        
+        function createCategoriesInput() {
+            $query = $this->con->prepare("SELECT * FROM categories");
+            $query->execute();
+            
+            $html = "<div class='form-group'>
+                    <select class='form-control' name='categoryInput'>";
+            
+            while($row->$query->fetch(PDO::FETCH_ASSOC)) {
+                $id = $row["id"];
+                $name = $row["name"];
+                $html .= "<option value='$id'>$name</option>";
+            }
+            
+            $html .= "</select>
+                </div>";
+
+            return $html;
+        }
+
+        function createUploadButton() {
+            return "<button type='submit' class='btn btn-primary' name='uploadButton'>
+                Upload
+            </button>";
         }
     }    
 ?>
