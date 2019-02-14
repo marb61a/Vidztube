@@ -41,8 +41,18 @@
                     return false;
                 }
                 
+                if(!$this->convertVideoToMp4($tempFilePath, $finalFilePath)) {
+                    echo "Upload failed\n";
+                    return false;
+                }
+                
                 return true;
             }
+        }
+        
+        private function processData($videoData, $filePath) {
+            $videoType = pathInfo($filePath, PATHINFO_EXTENSION);
+            
         }
         
         private function isValidSize($data) {
