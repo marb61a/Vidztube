@@ -58,6 +58,38 @@
                     <h3>Sign Up</h3>
                     <span>to continue to VidzTube</span>    
                 </div>
+                
+                <div class="loginForm">
+                    <form action="signUp.php" method="POST">
+                        <?php echo $account->getError(Constants::$firstNameCharacters); ?>
+                        <input type="text" name="firstName" placeholder="First name" value="<?php getInputValue('firstName'); ?>" autocomplete="off" required>
+        
+                        <?php echo $account->getError(Constants::$lastNameCharacters); ?>
+                        <input type="text" name="lastName" placeholder="Last name" autocomplete="off" value="<?php getInputValue('lastName'); ?>" required>
+        
+                        <?php echo $account->getError(Constants::$usernameCharacters); ?>
+                        <?php echo $account->getError(Constants::$usernameTaken); ?>
+                        <input type="text" name="username" placeholder="Username" autocomplete="off" value="<?php getInputValue('username'); ?>" required>
+        
+                        <?php echo $account->getError(Constants::$emailsDoNotMatch); ?>
+                        <?php echo $account->getError(Constants::$emailInvalid); ?>
+                        <?php echo $account->getError(Constants::$emailTaken); ?>
+                        <input type="email" name="email" placeholder="Email" autocomplete="off" value="<?php getInputValue('email'); ?>" required>
+                        <input type="email" name="email2" placeholder="Confirm email" autocomplete="off" value="<?php getInputValue('email2'); ?>" required>
+                        
+                        <?php echo $account->getError(Constants::$passwordsDoNotMatch); ?>
+                        <?php echo $account->getError(Constants::$passwordNotAlphanumeric); ?>
+                        <?php echo $account->getError(Constants::$passwordLength); ?>
+                        <input type="password" name="password" placeholder="Password" autocomplete="off" required>
+                        <input type="password" name="password2" placeholder="Confirm password" autocomplete="off" required>
+        
+                        <input type="submit" name="submitButton" value="SUBMIT">
+                    </form>
+                </div>
+                
+                <a class="signInMessage" href="signIn.php">
+                    Already have an account? Sign in here!
+                </a>
             </div>
         </div>
     </body>
