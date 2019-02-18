@@ -53,14 +53,45 @@
         private function processData($videoData, $filePath) {
             $videoType = pathInfo($filePath, PATHINFO_EXTENSION);
             
+            if(!$this->isValidSize($videoData)) {
+                echo "File too large. Can't be more than " . $this->sizeLimit . " bytes";
+                return false;
+            } else if(!$this->isValidType($videoType)) {
+                echo "Invalid File Type";
+                return false;
+            } else if($this->hasError($videoData)) {
+                echo "Error code: " . $videoData["error"];
+                return false;
+            }
+            
+            return true;
         }
         
         private function isValidSize($data) {
             return $data["size"] <= $this->sizeLimit;
         }
         
+        private function isValidType($type) {
+            $lowercased = strtolower($type);
+            return in_array($lowercased, $this->allowedTypes);
+        }
+        
+        private function hasError($data) {
+            return $data["error"] != 0;
+        }
+        
         private function insertVideoData($uploadData, $filePath) {
+            $query = $this->con->prepare("INSERT INTO videos(title, uploadedBy, description, privacy, category, filePath)
+                                        VALUES(:title, :uploadedBy, :description, :privacy, :category, :filePath)");
             
+            $query->bindParam(":title", $uploadData->title);
+            $query->bindParam(":uploadedBy", $uploadData->uploadedBy);
+            $query->bindParam(":description", $uploadData->description);
+            $query->bindParam(":privacy", $uploadData->privacy);
+            $query->bindParam(":category", $uploadData->category);
+            $query->bindParam(":filePath", $filePath);
+            
+            return $query->execute();
         }
     }
 ?>
