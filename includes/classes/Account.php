@@ -7,7 +7,14 @@
             $this->con = $con;
         }
         
-        public function login() {
+        public function login($un, $pw) {
+            $pw = hash("sha512", $pw);
+            
+            $query = $this->con->prepare("SELECT * FROM users WHERE username=:un AND password=:pw");
+            $query->bindParam(":un", $un);
+            $query->bindParam(":pw", $pw);
+    
+            $query->execute();
             
         }
         
@@ -65,6 +72,26 @@
             
             if($query->rowCount() != 0) {
                 array_push($this->errorArray, Constants::$usernameTaken);
+            }
+        }
+        
+        private function validateEmails($em, $em2) {
+            if($em != $em2) {
+                array_push($this->errorArray, Constants::$emailsDoNotMatch);
+                return;
+            }
+            
+            if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+                array_push($this->errorArray, Constants::$emailInvalid);
+                return;
+            }
+            
+            $query = $this->con->prepare("SELECT email FROM users WHERE email=:em");
+            $query->bindParam(":em", $em);
+            $query->execute();
+            
+            if($query->rowCount() != 0) {
+                array_push($this->errorArray, Constants::$emailTaken);
             }
         }
         
