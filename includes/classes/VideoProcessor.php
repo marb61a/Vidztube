@@ -93,5 +93,32 @@
             
             return $query->execute();
         }
+        
+        private function convertVideoToMp4($tempFilePath, $finalFilePath) {
+            $cmd = "$this->ffmpegPath -i $tempFilePath $finalFilePath 2>&1";
+            
+            $outputlog = array();
+            exec($cmd, $outputlog, $returnCode);
+            
+            if($returnCode != 0) {
+                // Command failed
+                foreach($outputlog as $line){
+                    echo $line . "<br>";
+                }
+                
+                return false;
+            }
+            
+            return true;
+        }
+        
+        private function deleteFile($filePath) {
+            if(!unlink($filePath)) {
+                echo "Could not delete file\n";
+                return false;
+            }
+            
+            return true;
+        }
     }
 ?>
