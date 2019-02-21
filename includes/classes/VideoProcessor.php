@@ -46,6 +46,17 @@
                     return false;
                 }
                 
+                if(!$this->deleteFile($tempFilePath)) {
+                    echo "Upload Failed\n";
+                    return false;
+                }
+                
+                if(!$this->generateThumbnails($finalFilePath)) {
+                    echo "Upload failed - could not generate thumbnails\n";
+                    return false;
+                }
+
+                
                 return true;
             }
         }
@@ -119,6 +130,28 @@
             }
             
             return true;
+        }
+        
+        private function generateThumbnails($filePath) {
+            $thumbnailSize = "210x118";
+            $numThumbnails = 3;
+            $pathToThumbnail = "uploads/videos/thumbnails";
+            
+            $duration = $this->getVideoDuration($filePath);
+            $videoId = $this->con->lastInsertId();
+            $this->updateDuration($duration, $videoId);
+            
+        }
+        
+        private function getVideoDuration($filePath) {
+            return (int)shell_exec("$this->ffprobePath -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 $filePath");
+        }
+        
+        private function updateDuration($duration, $videoId) {
+            $hours = floor($duration / 3600);
+            $mins = floor(($duration - ($hours*3600)) / 60);
+            $secs = floor($duration % 60);
+            
         }
     }
 ?>
