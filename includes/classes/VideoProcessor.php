@@ -141,6 +141,35 @@
             $videoId = $this->con->lastInsertId();
             $this->updateDuration($duration, $videoId);
             
+            for($num = 1; $num <= $numThumbnails; $num++) {
+                $imageName = uniqid().".jpg";
+                $interval = ($duration * 0.8) / $numThumbnails * $num;
+                $fullThumbnailPath = "$pathToThumbnail/$videoId-$imageName";
+                
+                $cmd = "$this->ffmpegPath -i $filePath -ss $interval -s $thumbnailSize -vframes 1 $fullThumbnailPath 2>&1";
+                $outputlog = array();
+                exec($cmd, $outputlog, $returnCode);
+                
+                if($returnCode != 0) {
+                    //Command failed
+                    foreach($outputLog as $line) {
+                        echo $line . "<br>";
+                    }
+                }
+                
+                $query = $this->con->prepare("INSERT INTO thumbnails(videoId, filePath, selected) VALUES(:videoId, :filePath, :selected)");
+                $query = bindParam(":videoId", $videoId);
+                $query->bindParam(":filePath", $fullThumbnailPath);
+                $query->bindParam(":selected", $selected);
+                
+                $selected = $num == 1 ? 1 : 0;
+                $success = $query->execute();
+                
+                if(!$success) {
+                    echo "Error inserting thumbail\n";
+                    return false;
+                }
+            }
         }
         
         private function getVideoDuration($filePath) {
@@ -152,6 +181,16 @@
             $mins = floor(($duration - ($hours*3600)) / 60);
             $secs = floor($duration % 60);
             
+            $hours = ($hours < 1) ? "" : $hours . ":";
+            $mins = ($mins < 10) ? "0" . $mins . ":" : $mins . ":";
+            $secs = ($secs < 10) ? "0" . $secs : $secs;
+    
+            $duration = $hours.$mins.$secs;
+    
+            $query = $this->con->prepare("UPDATE videos SET duration=:duration WHERE id=:videoId");
+            $query->bindParam(":duration", $duration);
+            $query->bindParam(":videoId", $videoId);
+            $query->execute();
         }
     }
 ?>
