@@ -14,6 +14,28 @@
                         $image
                     <span class='text'>$text</span>
                 </button>";
-            }
+        }
+        
+        public static function createHyperlinkButton($test, $imageSrc, $href, $class) {
+            $image = ($imageSrc == null) ? "" : "<img src='$imageSrc'>";
+            
+            return "<a href='$href'>
+                <button class='$class'>
+                    $image
+                    <span class='text'>$text</span>
+                </button>    
+            </a>";
+        }
+        
+        public static function createUserProfilButton($con, $username) {
+            $userObj = new User($con, $username);
+            $profilePic = $userObj->getProfilePic();
+            $link = "profile.php?username=$username";
+            
+            return "<a href='$link'>
+                <img src='$profilePic' class='profilePicture'>
+            </a>";
+        }
+        
     }
 ?>
