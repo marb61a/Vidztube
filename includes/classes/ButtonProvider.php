@@ -27,7 +27,7 @@
             </a>";
         }
         
-        public static function createUserProfilButton($con, $username) {
+        public static function createUserProfileButton($con, $username) {
             $userObj = new User($con, $username);
             $profilePic = $userObj->getProfilePic();
             $link = "profile.php?username=$username";
@@ -37,5 +37,31 @@
             </a>";
         }
         
+        public static function createVideoEditButton($videoId) {
+            $href = "editVideo.php?videoId=$videoId";
+            $button = ButtonProvider::createHyperlinkButton("EDIT VIDEO", null, $href, "edit butto");
+            
+            return "<div class='editVideoButtonContainer'>
+                $button
+            </div>";
+        }
+        
+        public static function createSubscriberButton($con, $userToObj, $userLoggedInObj) {
+            $userTo = $userToObj->getUsername();
+            $userLoggedIn = $userLoggedInObj->getUsername();
+            
+            $isSubscribedTo = $userLoggedInObj->isSubscribedTo($userTo);
+            $buttonText = $isSubscribedTo ? "SUBSCRIBED" : "SUBSCRIBE";
+            $buttonText .= " " . $userToObj->getSubscriberCount();
+    
+            $buttonClass = $isSubscribedTo ? "unsubscribe button" : "subscribe button";
+            $action = "subscribe(\"$userTo\", \"$userLoggedIn\", this)";
+    
+            $button = ButtonProvider::createButton($buttonText, null, $action, $buttonClass);
+    
+            return "<div class='subscribeButtonContainer'>
+                $button
+            </div>";
+        }
     }
 ?>
