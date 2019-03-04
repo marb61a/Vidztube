@@ -27,11 +27,38 @@
                     <span class='viewCount'>$views</span>
                     $controls
                 </div>
-            </div>";
+            </div>";$actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj);
         }
         
         private function createSecondaryInfo() {
+            $descriotion = $this->video->getDescription();
+            $uploadDate = $this->video->uploadDate();
+            $uploadedBy = $this->video->getUploadedBy();
+            $profileButton = ButtonProvider::createUserProfileButton($this->con, $uploadedBy);
             
+            if($uploadedBy == $this->userLoggedInObj->getUsername()){
+                $actionButton = ButtonProvider::createEditVideoButton($this->video->getId());    
+            } else {
+                $userToObj = new User($this->con, $uploadedBy);
+                $actionButton = ButtonProvider::createSubscriberButton($this->con, $userToObject, $this->userLoggedInObj);
+            }
+            
+            return "<div class='secondaryInfo'>
+                <div class='topRow'> class='descriptionContainer'
+                    $profileButton
+                        <div class='uploadInfo'>
+                            <span class='owner'>
+                                <a href='profile.php?username=$uploadedBy'>
+                                    $uploadedBy
+                                </a>
+                            </span>
+                        </div>
+                    $actionButton
+                </div>
+                <div class='descriptionContainer'>
+                    $descriotion
+                </div>
+            </div>";
         }
     }
 ?>
