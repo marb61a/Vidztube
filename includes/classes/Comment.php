@@ -34,19 +34,41 @@
             $numResponses = $this->getNumberOfReplies();
             
             if($numResponses > 0) {
-                
+                $viewRepliesText = "<span class='repliesSection viewReplies' onclick='getReplies($id, this, $videoId)'>
+                    View all $numResponses replies
+                </span>";
             } else {
-                
+                $viewRepliesText = "<div class='repliesSection'></div>";
             }
             
             return "<div class='itemContainer'>
                 <div class='comment'>
                     $profileButton
                     <div class=''mainContainer>
-                    
+                        <div class='commentHeader'>
+                            <a href='profile.php?username=$postedBy'>
+                                <span class='username'>$postedBy</span>
+                            </a>
+                            <span class='timestamp'>$timespan</span>
+                        </div>
+                        <div class='body'>
+                            $body
+                        </div>
                     </div>
                 </div>
+                
+                $commentControls
+                $viewRepliesText
             </div>";
+        }
+        
+        public function getNumberOfReplies() {
+            $query = $this->con->prepare("SELECT count(*) FROM comments WHERE responseTo=:responseTo");
+            $query->bindParam(":responseTo", $id);
+            $id = $this->sqlData["id"];
+            $query->execute();
+            
+            return $query->fetchColumn();
         }
         
         public function time_elapsed_string($datetime, $full = false) {
@@ -143,6 +165,15 @@
     
                 return -1 - $count;
             }
+        }
+        
+        public function getReplies() {
+            $query = $this->con->prepare("SELECT * FROM comments WHERE responseTo=:commentId ORDER BY datePosted ASC");
+            $query->bindParam(":commentId", $id);
+            
+            $id = $this->getId();
+            $query->execute();
+            
         }
     }
 ?>
