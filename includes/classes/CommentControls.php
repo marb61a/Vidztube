@@ -12,10 +12,16 @@
         
         public function create() {
             $replyButton = $this->createReplyButton();
+            $likesCount = $this->createLikesCount();
+            $likeButton = $this->createLikeButton();
+            $dislikeButton = $this->createDislikeButton();
             $replySection = $this->createReplySection();
             
             return "<div class='controls'>
                 $replyButton
+                $likesCount
+                $likeButton
+                $dislikeButton
             </div>";
             $replySection;
         }
@@ -54,6 +60,21 @@
                 $cancelButton
                 $postButton
             </div>";
+        }
+        
+        private function createLikeButton() {
+            $commentId = $this->comment->getId();
+            $videoId = $this->comment->getVideoId();
+            $action = "likeComment($commentId, this, $videoId)";
+            $class = "likeButton";
+            
+            $imageSrc = "assets/images/icons/thumb-up.png";
+
+            if($this->comment->wasLikedBy()) {
+                $imageSrc = "assets/images/icons/thumb-up-active.png";
+            }
+    
+            return ButtonProvider::createButton("", $imageSrc, $action, $class);
         }
     }
 ?>
