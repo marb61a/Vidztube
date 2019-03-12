@@ -76,5 +76,20 @@
     
             return ButtonProvider::createButton("", $imageSrc, $action, $class);
         }
+        
+        private function createDislikeButton() {
+            $commentId = $this->comment->getId();
+            $videoId = $this->comment->getVideoId();
+            $action = "dislikeComment($commentId, this, $videoId)";
+            $class = "dislikeButton";
+            
+            $imageSrc = "assets/images/icons/thumb-down.png";
+
+            if($this->comment->wasDislikedBy()) {
+                $imageSrc = "assets/images/icons/thumb-down-active.png";
+            }
+    
+            return ButtonProvider::createButton("", $imageSrc, $action, $class);
+        }
     }
 ?>
