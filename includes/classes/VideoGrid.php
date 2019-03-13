@@ -42,5 +42,37 @@
     
             return $elementsHtml;
         }
+        
+        public function generateItemsFromVideos($videos) {
+            $elementsHtml = "";
+            
+            foreach($videos as $video) {
+                $item = new VideoGridItem($video, $this->largeMode);
+                $elementsHtml .= $item->create();
+            }
+            
+            return $elementsHtml
+        }
+        
+        public function createGridHeader($title, $showFilter) {
+            $filter = "";
+            
+            if($showFilter) {
+                $link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            
+                $urlArray = parse_url($link);
+                $query = $urlArray["query"];
+    
+                parse_str($query, $params);
+                unset($params["orderBy"]);
+                
+                $newQuery = http_build_query($params);
+                $newUrl = basename($_SERVER["PHP_SELF"]) . "?" . $newQuery;
+                
+                $filter = "<div>
+                
+                </div>";
+            }
+        }
     }
 ?>
