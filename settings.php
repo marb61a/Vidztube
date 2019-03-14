@@ -12,6 +12,28 @@
     $detailsMessage = "";
     $passwordMessage = "";
     $formProvider = new SettingsFormProvider();
+    
+    if(isset($_POST["saveDetailsButton"])) {
+        $account = new Account($con);
+        
+        $firstName = FormSanitizer::sanitizeFormString($_POST["firstName"]);
+        $lastName = FormSanitizer::sanitizeFormString($_POST["lastName"]);
+        $email = FormSanitizer::sanitizeFormString($_POST["email"]);
+        
+        if($account->updateDetails($firstName, $lastName, $email, $userLoggedInObj->getUsername())) {
+            $detailsMessage = "<div class='alert alert-success'>
+                <strong>SUCCESS!</strong> Details updated successfully!
+            </div>";
+        } else {
+            $errorMessage = $account->getFirstError();
+            
+            if($errorMessage == "") $errorMessage = "Something went wrong";
+
+            $detailsMessage = "<div class='alert alert-danger'>
+                <strong>ERROR!</strong> $errorMessage
+            </div>";
+        }
+    }
 ?>
 
 <div class="settingsContainer column">
@@ -25,6 +47,14 @@
                 isset($_POST["lastName"]) ? $_POST["lastName"] : $userLoggedInObj->getLastName(),
                 isset($_POST["email"]) ? $_POST["email"] : $userLoggedInObj->getEmail()
             );
+        ?>
+    </div>
+    <div class="formSection">
+        <div class="message">
+            <?php echo $passwordMessage; ?>
+        </div>
+        <?php
+            echo $formProvider->createPasswordForm();
         ?>
     </div>
 </div>
