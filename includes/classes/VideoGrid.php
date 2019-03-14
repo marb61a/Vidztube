@@ -51,7 +51,7 @@
                 $elementsHtml .= $item->create();
             }
             
-            return $elementsHtml
+            return $elementsHtml;
         }
         
         public function createGridHeader($title, $showFilter) {
