@@ -14,10 +14,10 @@
 
 <div class="largeVideoGridContainer">
     <?php
-    if(sizeof($videos) > 0) {
-        echo $videoGrid->createLarge($videos, "Videos that you have liked", false);
-    } else {
-        echo "No videos to show";
-    }
+        if(sizeof($videos) > 0) {
+            echo $videoGrid->createLarge($videos, "Videos that you have liked", false);
+        } else {
+            echo "No videos to show";
+        }
     ?>
 </div>
