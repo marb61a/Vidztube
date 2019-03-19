@@ -20,7 +20,7 @@
         $lastName = FormSanitizer::sanitizeFormString($_POST["lastName"]);
         $email = FormSanitizer::sanitizeFormString($_POST["email"]);
         
-        if($account->updateDetails($firstName, $lastName, $email, $userLoggedInObj->getUsername())) {
+        if($account->updateDetails($firstName, $lastName, $email, $userLoggedInObj->getusername())) {
             $detailsMessage = "<div class='alert alert-success'>
                 <strong>SUCCESS!</strong> Details updated successfully!
             </div>";
@@ -32,6 +32,18 @@
             $detailsMessage = "<div class='alert alert-danger'>
                 <strong>ERROR!</strong> $errorMessage
             </div>";
+        }
+    }
+    
+    if(isset($_POST["savePasswodButton"])) {
+        $account = new Account($con);
+        
+        $oldPassword = FormSanitizer::sanitizeFormPassword($_POST["oldPassword"]);
+        $newPassword = FormSanitizer::sanitizeFormPassword($_POST["newPassword"]);
+        $newPassword2 = FormSanitizer::sanitizeFormPassword($_POST["newPassword2"]);
+        
+        if($account->updatePassword($oldPassword, $newPassword, $newPassword2, $userLoggedInObj->getusername())) {
+            
         }
     }
 ?>
