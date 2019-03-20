@@ -69,10 +69,25 @@
                 $newQuery = http_build_query($params);
                 $newUrl = basename($_SERVER["PHP_SELF"]) . "?" . $newQuery;
                 
-                $filter = "<div>
-                
+                $filter = "<div class='right'>
+                    <span>Order By</span>
+                    <a href='$newUrl&orderBy=uploadDate'>Upload date</a>
+                    <a href='$newUrl&orderBy=views'>Most viewed</a>
                 </div>";
             }
+            
+            return "<div class='videoGridHeader'>
+                <div class='left'>
+                    $title
+                </div>
+                $filter
+            </div>";
+        }
+        
+        public function createLarge($videos, $title, $showFilter) {
+            $this->gridClass .= " large";
+            $this->largeMode = true;
+            return $this->create($videos, $title, $showFilter);
         }
     }
 ?>

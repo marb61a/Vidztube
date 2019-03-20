@@ -43,16 +43,21 @@
             </div>";
         }
         
-        function createPrivacyInput() {
+        function createPrivacyInput($value) {
+            if($value == null) $value = "";
+
+            $privateSelected = ($value == 0) ? "selected='selected'" : "";
+            $publicSelected = ($value == 1) ? "selected='selected'" : "";
+            
             return "<div class='form-group'>
                 <select class='form-control' name='privacyInput>
-                    <option value='0'>Private</option>
-                    <option value='1'>Public</option>
+                    <option value='0' $privateSelected>Private</option>
+                    <option value='1 $publicSelected'>Public</option>
                 </select>
             </div>";
         }
         
-        function createCategoriesInput() {
+        function createCategoriesInput($value) {
             $query = $this->con->prepare("SELECT * FROM categories");
             $query->execute();
             
@@ -62,6 +67,8 @@
             while($row->$query->fetch(PDO::FETCH_ASSOC)) {
                 $id = $row["id"];
                 $name = $row["name"];
+                $selected = ($id == $value) ? "selected='selected'" : "";
+                
                 $html .= "<option value='$id'>$name</option>";
             }
             
@@ -74,6 +81,12 @@
         function createUploadButton() {
             return "<button type='submit' class='btn btn-primary' name='uploadButton'>
                 Upload
+            </button>";
+        }
+        
+        function createSaveButton() {
+            return "<button type='submit' class='btn btn-primary' name='saveButton'>
+                Save
             </button>";
         }
     }    
