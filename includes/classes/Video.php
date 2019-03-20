@@ -48,6 +48,24 @@
             return $this->sqlData["duration"];
         }
         
+        public function incrementViews() {
+            $query = $this->con->prepare("UPDATE videos SET views=views+1 WHERE id=:id");
+            $query->bindParam(":id", $videoId);
+        
+            $videoId = $this->getId();
+            $query->execute();
+            
+            $this->sqlData["views"] = $this->sqlData["views"] + 1;
+        }
+        
+        public function getLikes() {
+            $query = $this->con->prepare("SELECT count(*) as 'count' FROM likes WHERE videoId = :videoId");
+            $query->bindParam(":videoId", $videoId);
+            $videoId = $this->getId();
+            $query->execute();
+            
+        }
+        
         public function like() {
             $id = $this->getId();
             $username = $this->userLoggedInObj->getUsername();

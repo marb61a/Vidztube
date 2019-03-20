@@ -24,6 +24,21 @@
             </form>";    
         }
         
+        public function createEditDetailsForm($video) {
+            $titleInput = $this->createTitleInput($video->getTitle());
+            $descriptionInput = $this->createDescriptionInput($video->getDescription());
+            $privacyInput = $this->createPrivacyInput($video->getPrivacy());
+            $categoriesInput = $this->createCategoriesInput($video->getCategory());
+            $saveButton = $this->createSaveButton();
+            return "<form method='POST'>
+                $titleInput
+                $descriptionInput
+                $privacyInput
+                $categoriesInput
+                $saveButton
+            </form>";
+        }
+        
         private function createFileInput() {
             return "<div class='form-group'>
                 <label for='exampleFormControlFile1'>Your file</label>
