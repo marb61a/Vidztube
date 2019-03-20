@@ -5,23 +5,31 @@
         public function __construct($video, $largeMode) {
             $this->video = $video;
             $this->largeMode = $largeMode;
-            $url = "watch.php?id=" . $this->video->getId();
-            
-            return "<a href='$url'>
-            
-            </a>";
         }
         
         public function create() {
             $thumbnail = $this->createThubnail();
             $details = $this->createDetails();
+            $url = "watch.php?id=" . $this->video->getId();
             
+            return "<a href='$url'>
+                <div class='videoGridItem'>
+                    $thumbnail
+                    $details
+                <div>
+            </a>";
         }
         
         private function createThubnail() {
             $thumbnail = $this->video->getThumbnail();
             $duration = $this->video->getDuration();
             
+            return "<div class='thumbnail'>
+                <img src='$thumbnail'>
+                <div class='duration'>
+                    <span>$duration</span>
+                </div>
+            </div>";
         }
         
         private function createDetails() {
@@ -40,6 +48,18 @@
                 </div>
                 $description
             </div>";
+        }
+        
+        private function createDescription() {
+            if(!$this->largeMode) {
+                return "";
+            } else {
+                $description = $this->video->getDescription();
+                $description = (strlen($description) > 350) ? substr($description, 0, 347) . "..." : $description;
+                return "<span class=''description>
+                    $description
+                </span>";
+            }
         }
     }
 ?>
