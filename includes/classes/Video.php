@@ -164,5 +164,41 @@
             
             return $query->rowCount() > 0;
         }
+        
+        public function getNumberOfComments() {
+            $query = $this->con->prepare("SELECT * FROM comments WHERE videoId=:videoId");
+            $query->bindParam(":videoId", $id);
+            
+            $id = $this->getId();
+            $query->execute();
+            
+            return $query->rowCount();
+        }
+        
+        public function getComments() {
+            $query = $this->con->prepare("SELECT * FROM comments WHERE videoId=:videoId AND responseTo=0 ORDER BY datePosted DESC");
+            $query->bindParam(":videoId", $id);
+            
+            $id = $this->getId();
+            $query->execute();
+            
+            $comments = array();
+            
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $comment = new Comment($this->con, $row, $this->userLoggedInObj, $id);
+                array_push($comments, $comment);
+            }
+            
+            return $comment;
+        }
+        
+        public function getThumbnail() {
+            $query = $this->con->prepare("SELECT filePath FROM thumbnails WHERE videoId=:videoId AND selected=1");
+            $query->bindParam(":videoId", $videoId);
+            $videoId = $this->getId();
+            $query->execute();
+    
+            return $query->fetchColumn();
+        }
     }
 ?>
