@@ -32,16 +32,27 @@
         }
         
         private function createFirstNameInput($value) {
+            if($value == null) $value = "";
             
+            return "<div class='form-group'>
+                <input class='form-control' type='text' placeholder='First name' name='firstName' value='$value' required>
+             </div>";
         }
         
         private function createLastNameInput($value) {
+             if($value == null) $value = "";
              
+             return "<div class='form-group'>
+                <input class='form-control' type='text' placeholder='Last name' name='lastName' value='$value' required>
+             </div>";
         }
          
         private function createEmailInput($value) {
             if($value == null) $value = "";
             
+            return "<div class='form-group'>
+                <input class='form-control' type='email' placeholder='Email' name='email' value='$value' required>
+             </div>";
         }
         
         private function createSaveUserDetailsButton() {
@@ -54,6 +65,12 @@
             return "<button type='submit' class='btn btn-primary' name='savePasswordButton'>
                 Save
             </button>";
+        }
+        
+        private function createPasswordInput($name, $placeholder) {
+            return "<div class='form-group'>
+                <input class='form-control' type='password' placeholder='$placeholder' name='$name' required>
+            </div>";
         }
     }
 ?>
