@@ -25,7 +25,24 @@
             $url = $data["filePath"];
             $videoId = $data["videoId"];
             
-            return "";
+            return "<div class='thumbnailItem $selected' onclick='setNewThumbnail($id, $videoId, this)'>
+                <img src='$url'>
+            </div>";
+        }
+        
+        private function getThumbnailData() {
+            $data = array();
+            
+            $query = $this->con->prepare("SELECT * FROM thumbnails WHERE videoId=:videoId");
+            $query->bindParam(":videoId", $videoId);
+            $videoId = $this->video->getId();
+            $query->execute();
+            
+            while($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $data[] = $row;
+            }
+            
+            return $data;
         }
     }
 ?>
