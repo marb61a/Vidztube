@@ -55,5 +55,36 @@
                 </div>
             </div>";
         }
+        
+        public function createTabSection() {
+            return "<ul class='nav nav-tabs' role='tabList'>
+                <li class='nav-item'>
+                    <a class='nav-link active' id='videos-tab' data-toggle='tab' href='#videos' role='tab' aria-controls='videos' aria-selected='true'>
+                        VIDEOS
+                    </a>
+                </li>
+                <li class='nav-item'>
+                    <a class='nav-link' id='about-tab' data-toggle='tab' href='#about' role='tab' aria-controls='about' aria-selected='false'>
+                        ABOUT
+                    </a>
+                </li>
+            </ul>";
+        }
+        
+        public function createContentSection() {
+            $videos = $this->profileData->getUsersVideos();
+            
+            if(sizeof($videos) > 0) {
+                $videoGrid = new VideoGrid($this->con, $this->userLoggedInObj);
+                $videoGridHtml = $videoGrid->create($videos, null, false);
+            } else {
+                $videoGridHtml = "<span>This user has no videos</span>";
+            }
+            
+            $aboutSection = $this->createAboutSection();
+            return "<div>
+            
+            </div>";
+        }
     }
 ?>
