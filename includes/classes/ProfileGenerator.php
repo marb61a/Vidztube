@@ -32,5 +32,28 @@
                 <span class='channelName'>$name</span>
             </div>";
         }
+        
+        public function createHeaderSection() {
+            $profileImage = $this->profileData->getProfilePic();
+            $name = $this->profileData->getProfileUserFullName();
+            $subCount = $this->profileData->getSubscriberCount();
+
+            $button = $this->createHeaderButton();
+            
+            return "<div class='profileHeader'>
+                <div class='userInfoContainer'>
+                    <img class='profileImage' src='$profileImage'>
+                    <div class='userInfo'>
+                        <span class='title'>$name</span>
+                        <span class='subscriberCount'>$subCount subscribers</span>
+                    </div>
+                </div>
+                <div class='buttonContainer'>
+                    <div class='buttonItem'>
+                        $button
+                    </div>
+                </div>
+            </div>";
+        }
     }
 ?>
