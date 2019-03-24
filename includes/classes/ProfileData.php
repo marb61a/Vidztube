@@ -53,5 +53,29 @@
             
             return $videos;
         }
+        
+        public function getAllUserDetails() {
+            return array(
+                "Name" => $this->getProfileUserFullName(),
+                "Username" => $this->getProfileUsername(),
+                "Subscribers" => $this->getSubscriberCount(),
+                "Total views" => $this->getTotalViews(),
+                "Sign up date" => $this->getSignUpDate()
+            );
+        }
+        
+        private function getTotalViews() {
+            $query = $this->con->prepare("SELECT sum(views) FROM videos WHERE uploadedBy=:uploadedBy");
+            $query->bindParam(":uploadedBy", $username);
+            $username = $this->getProfileUsername();
+            $query->execute();
+    
+            return $query->fetchColumn();
+        }
+    
+        private function getSignUpDate() {
+            $date = $this->profileUserObj->getSignUpDate();
+            return date("F jS, Y", strtotime($date));
+        }
     }
 ?>
