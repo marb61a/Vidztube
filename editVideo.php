@@ -23,8 +23,25 @@
     $detailsMessage = "";
     if(isset($_POST["saveButton"])) {
         $videoData = new VideoUploadData(
-            null
+            null,
+            $_POST["titleInput"],
+            $_POST["descriptionInput"],
+            $_POST["privacyInput"],
+            $_POST["categoryInput"],
+            $userLoggedInObj->getUsername()
         );
+        
+        if($videoData->updateDetails($con, $video->getId())) {
+            $detailsMessage = "<div class='alert alert-success'>
+                <strong>SUCCESS!</strong> Details updated successfully!
+            </div>";
+            
+            $video = new Video($con, $_GET["videoId"], $userLoggedInObj);
+        } else {
+            $detailsMessage = "<div class='alert alert-danger'>
+                <strong>ERROR!</strong> Something went wrong
+            </div>";
+        }
     }
 ?>
 
