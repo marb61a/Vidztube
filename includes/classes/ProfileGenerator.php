@@ -82,9 +82,42 @@
             }
             
             $aboutSection = $this->createAboutSection();
-            return "<div>
-            
+            return "<div class='tab-content channelContent'>
+                <div class='tab-pane fade show active' id='videos' role='tabpanel' aria-labelledby='videos-tab'>
+                    $videoGridHtml
+                </div>
+                <div class='tab-pane fade' id='about' role='tabpanel' aria-labelledby='about-tab'>
+                    $aboutSection
+                </div>
             </div>";
+        }
+        
+        private function createHeaderButton() {
+            if($this->userLoggedInObj->getUsername == $this->profileData->getProfileUsername()) {
+                return "";
+            } else {
+                return ButtonProvider::createSubscriberButton(
+                    $this->con,
+                    $this->profileData->getProfileUserObj(),
+                    $this->userLoggedInObj
+                );
+            }
+        }
+        
+        private function aboutSection() {
+            $html = "<div class=''>
+                <div class='title'>
+                    <span>Details</span>
+                </div>
+                <div class='values'>";
+            
+            $details = $this->profileData->getAllUserDetails();
+            foreach($details as $key => $value) {
+                $html .= "<span>$key: $value</span>";
+            }    
+            
+            $html .= "</div> </div>";
+            return $html;
         }
     }
 ?>
