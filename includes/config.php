@@ -7,7 +7,8 @@
     
     // DB Connection
     try{
-        $con = new PDO();  
+        $con = new PDO();
+        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     } catch(PDOException $e) {
         echo "Connection failed: " . $e->getMessage();
     }
