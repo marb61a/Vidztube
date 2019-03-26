@@ -101,6 +101,23 @@
             }
         }
         
+        private function validateNewEmail($em, $un) {
+            if(!filter_var($em, FILTER_VALIDATE_EMAIL)) {
+                array_push($this->errorArray, Constants::$emailInvalid);
+                return;
+            }
+    
+            $query = $this->con->prepare("SELECT email FROM users WHERE email=:em AND username != :un");
+            $query->bindParam(":em", $em);
+            $query->bindParam(":un", $un);
+            $query->execute();
+    
+            if($query->rowCount() != 0) {
+                array_push($this->errorArray, Constants::$emailTaken);
+            }
+    
+        }
+        
         private function validatePasswords($pw, $pw2) {
             if($pw != $pw2) {
                 array_push($this->errorArray, Constants::$passwordsDoNotMatch);
@@ -120,6 +137,14 @@
         public function getError($error) {
             if(in_array($error, $this->errorArray)) {
                 return "<span class='errorMessage'>$error</span>";
+            }
+        }
+        
+        public function getFirstError() {
+            if(!empty($this->errorArray)) {
+                return $this->errorArray[0];
+            } else {
+                return "";
             }
         }
     }
